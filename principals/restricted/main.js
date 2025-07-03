@@ -5,14 +5,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
-  ScrollView,
+  ScrollView, 
   ImageBackground
 } from "react-native";
 import Slider from "@react-native-community/slider";
 import NavigationBar from "../../components/NavigationBar";
 import AnalogClock from "../../components/analogClock";
 import { Ionicons } from '@expo/vector-icons';
-import FrameImage from '../../assets/reloj.png';
+import FrameImage from '../../assets/marcoReloj.png';
 
 const MainRest = ({ navigation }) => {
   const [selectedOption, setSelectedOption] = useState("normal");
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 10,
   },
-    avatarSmall: {
+  avatarSmall: {
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -170,32 +170,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   clockFrame: {
-
     width: 300,
     height: 300,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   clockImageFrame: {
-    width: '94%',
-    height: '94%',
+    width: '98%',
+    height: '98%',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 38, // Espacio superior para el marco
-    marginBottom: 20, // Espacio superior para el marco
+ // Espacio superior para el marco
+    marginBottom: 25, // Espacio superior para el marco
     marginTop: 20, // Espacio superior para el marco
     overflow: 'hidden', // Asegura que el reloj no sobresalga del marco
     
   },
   clockInnerContainer: {
-    width: '75%',            // Ajusta el tamaño del reloj visualmente
-    height: '75%',
+    width: '100%',            // Ajusta el tamaño del reloj visualmente
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingRight: 34,   // Ajusta según el marco de la imagen
-    marginBottom: 15,    // Sube ligeramente el reloj
+    marginRight:2, // Espacio inferior para el marco
+    marginTop: 54,    // Sube ligeramente el reloj
 
   },
   buttonRow: {

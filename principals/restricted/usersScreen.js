@@ -111,6 +111,15 @@ const UsersScreen = ({ navigation }) => {
       Alert.alert("Error", "No se pudo conectar con el servidor")
     }
   }
+  // Function to get role color based on role name
+  const getRoleColor = (role) => {
+    switch(role?.toLowerCase()) {
+      case 'vip': return '#fbb42a';
+      case 'admin': return '#660154';
+      default: return '#666';
+    }
+  }
+
 
   const renderItem = ({ item }) => (
     <TouchableOpacity 
@@ -123,7 +132,9 @@ const UsersScreen = ({ navigation }) => {
       <View style={styles.userInfo}>
         <Text style={styles.userName}>{item.nombre || item.name}</Text>
         <Text style={styles.userEmail}>{item.correo || item.email}</Text>
-        <Text style={styles.userRol}>{item.rol || item.Rol}</Text>
+        <Text style={[styles.userRol,{ color: getRoleColor(item.rol || item.Rol) }]}>
+          {item.rol || item.Rol}
+        </Text>
       </View>
       <Ionicons name="create-outline" size={20} color="#666" />
     </TouchableOpacity>
@@ -199,6 +210,7 @@ const UsersScreen = ({ navigation }) => {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => setModalVisible(false)}
+          style={styles.modalContainer}
         >
           <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setModalVisible(false)}>
             <TouchableOpacity style={styles.modalContent} activeOpacity={1} onPress={() => {}}>
@@ -220,17 +232,17 @@ const UsersScreen = ({ navigation }) => {
                   style={styles.input}
                   value={editedName}
                   onChangeText={setEditedName}
-                  placeholder="Enter name"
+                  placeholder="Insert Name"
                 />
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Apellidos</Text>
+                <Text style={styles.label}>Last name</Text>
                 <TextInput
                   style={styles.input}
                   value={editedApellidos}
                   onChangeText={setEditedApellidos}
-                  placeholder="Enter apellidos"
+                  placeholder="Insert Last Name"
                 />
               </View>
 
@@ -240,7 +252,7 @@ const UsersScreen = ({ navigation }) => {
                   style={styles.input}
                   value={editedEmail}
                   onChangeText={setEditedEmail}
-                  placeholder="Enter email"
+                  placeholder="Insert Email"
                   keyboardType="email-address"
                   autoCapitalize="none"
                 />
@@ -295,7 +307,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 10,
   },
-    avatarSmall: {
+  avatarSmall: {
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -331,7 +343,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 15,
   },
-    listContainer: {
+  listContainer: {
     flex: 1,
   },
   listContent: {
@@ -382,7 +394,7 @@ const styles = StyleSheet.create({
   modalContent: {
     width: "90%",
     maxWidth: 400,
-    backgroundColor: "white",
+    backgroundColor: "#f4f4f4",
     borderRadius: 20,
     shadowColor: "#000",
     shadowOffset: {
@@ -394,20 +406,23 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalHeader: {
+    backgroundColor: "#660154",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 20,
+    borderBottomRadius: 6,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: "#ddd",
   },
+
   modalBody: {
     padding: 20,
   },
   modalTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#333",
+    color: "white",
   },
   closeButton: {
     padding: 5,
@@ -422,11 +437,26 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: "center",
   },
+   label: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 5,
+    fontWeight: "500",
+  },
   inputContainer: {
     marginBottom: 15,
   },
+    input: { 
+    /* borderWidth: 1,
+    borderColor: "#ddd", */
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    backgroundColor: "#fff",
+    marginBottom: 15,
+  },
   saveButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#660154",
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
@@ -439,8 +469,8 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     right: 20,
-    bottom: 80, // Ajusta según la altura de tu NavigationBar
-    backgroundColor: "#400135", // Color que coincide con tu tema
+    bottom: 80,
+    backgroundColor: "#400135", 
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -451,7 +481,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 5, 
-    zIndex: 10, // Asegura que esté por encima de otros elementos
+    zIndex: 10,
   },
 })
 
