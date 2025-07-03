@@ -14,14 +14,21 @@ const UsersScreen = ({ navigation }) => {
   const [editedEmail, setEditedEmail] = useState("")
   const [editedPuesto, setEditedPuesto] = useState("")
   const [editedRol, setEditedRol] = useState("")
+  const [showRoleDropdown, setShowRoleDropdown] = useState(false)
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
+
 
   const currentUser = {
     id: 1,
     name: 'Almendro Isaac Medina Ramírez',
     email: 'AlmIsaMedRam@gmail.com'
   };
+
+  const ROLE_OPTIONS = [
+    { label: "Admin", value: "admin" },
+    { label: "VIP", value: "vip" },
+  ]
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -95,7 +102,7 @@ const UsersScreen = ({ navigation }) => {
       })
       if (!response.ok) {
         const errorData = await response.json()
-        Alert.alert("Error", errorData.error || "Error actualizando usuario")
+        Alert.alert("Error", errorData.error || "Error while updating user")
         return
       }
       // Update users state with updated user data
@@ -104,13 +111,14 @@ const UsersScreen = ({ navigation }) => {
           (user.id === userId || user._id === userId) ? { ...user, ...updatedUser } : user
         )
       )
-      Alert.alert("Éxito", "Usuario actualizado exitosamente")
+      Alert.alert("Éxito", "User successfully updated", )
       setModalVisible(false)
     } catch (error) {
       console.error("Error updating user:", error)
       Alert.alert("Error", "No se pudo conectar con el servidor")
     }
   }
+
   // Function to get role color based on role name
   const getRoleColor = (role) => {
     switch(role?.toLowerCase()) {
@@ -119,7 +127,6 @@ const UsersScreen = ({ navigation }) => {
       default: return '#666';
     }
   }
-
 
   const renderItem = ({ item }) => (
     <TouchableOpacity 
@@ -209,7 +216,8 @@ const UsersScreen = ({ navigation }) => {
           animationType="slide"
           transparent={true}
           visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
+          onRequestClose={() => { 
+            setModalVisible(false); }}
           style={styles.modalContainer}
         >
           <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setModalVisible(false)}>
@@ -259,13 +267,40 @@ const UsersScreen = ({ navigation }) => {
               </View>
 
               <View style={styles.inputContainer}>
-                <Text style={styles.label}>Puesto</Text>
-                <TextInput
-                  style={styles.input}
-                  value={editedPuesto}
-                  onChangeText={setEditedPuesto}
-                  placeholder="Enter puesto"
-                />
+                <Text style={styles.label}>Rol</Text>
+                <TouchableOpacity 
+                  style={styles.dropdownSelector}
+                  onPress={() => setShowRoleDropdown(!showRoleDropdown)} //esto cambia el estado del dropdown para mostrarlo/ocultarlo
+                >
+                  <Text style={styles.dropdownSelectorText}>
+                    {editedRol || "Select Role"} 
+                  </Text>
+                  <Ionicons 
+                    name={showRoleDropdown ? "chevron-up" : "chevron-down"} 
+                    size={20} 
+                    color="#666" 
+                  />
+                </TouchableOpacity>
+                
+                {showRoleDropdown && (
+                  <View style={styles.dropdownOptions}>
+                    {ROLE_OPTIONS.map((role, index) => (
+                      <TouchableOpacity
+                        key={role.value}
+                        style={[
+                          styles.dropdownOption,
+                          index === ROLE_OPTIONS.length - 1 && { borderBottomWidth: 0 }
+                        ]}
+                        onPress={() => {
+                          setEditedRol(role.value);
+                          setShowRoleDropdown(false);
+                        }}
+                      >
+                        <Text style={styles.dropdownOptionText}>{role.label}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
               </View>
 
               <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
@@ -348,7 +383,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingHorizontal: 15,
-    paddingBottom: 20,
+    paddingBottom:70,
   },
   userCard: {
     flexDirection: "row",
@@ -455,6 +490,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     marginBottom: 15,
   },
+
+  dropdownSelector: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  borderRadius: 8,
+  padding: 12,
+  backgroundColor: '#fff',
+},
+  dropdownSelectorText: {
+    fontSize: 16,
+    color: '#333',
+},
+  dropdownOptions: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    marginTop: 5,
+    zIndex: 1000, 
+},
+  dropdownOption: {
+    padding: 12,
+
+},
+  dropdownOptionText: {
+    fontSize: 16,
+    color: '#333',
+},
   saveButton: {
     backgroundColor: "#660154",
     padding: 15,

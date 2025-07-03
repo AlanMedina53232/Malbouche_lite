@@ -27,7 +27,7 @@ const MainRest = ({ navigation }) => {
   const options = [
     ["Left", "Right"],
     ["Crazy", "Swing"],
-    ["Customized", "Normal"]
+    [ "Normal"]
   ];
 
   const handleOptionSelect = (option) => {
@@ -77,8 +77,8 @@ const MainRest = ({ navigation }) => {
             </View>
             </ImageBackground>
           </View>
-
-          {options.map((row, index) => (
+          <View style={styles.buttonContainer}>
+        {options.map((row, index) => (
             <View key={index} style={styles.buttonRow}>
               {row.map((item) => (
                 <TouchableOpacity
@@ -101,6 +101,8 @@ const MainRest = ({ navigation }) => {
               ))}
             </View>
           ))}
+          </View>
+  
           <View style={styles.sliderContainer}>
             <View style={styles.sliderBox}>
               <Text style={styles.sliderLabel}>Speed</Text>
@@ -196,6 +198,9 @@ const styles = StyleSheet.create({
     marginTop: 54,    // Sube ligeramente el reloj
 
   },
+  buttonContainer: {
+    marginTop: 20
+  },
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -235,7 +240,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: "#fff",
-    marginTop: 45,
+    marginTop: 20,
     elevation: 2,
     overflow: "hidden",
 
